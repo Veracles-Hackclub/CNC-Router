@@ -10,7 +10,7 @@ This is my journal of the design and building process of **CNC Router**.
 You can view this journal in more detail on **Hack Club Blueprint** [here](https://blueprint.hackclub.com/projects/181).
 
 
-## 10/5/2025 - The beginning, and the end of all of my freetime  
+## 10/5/2025 4 AM - The beginning, and the end of all of my freetime  
 
  Well, crud.
 
@@ -42,5 +42,197 @@ Now, all of this took me about 6 hours, and since I forgot to make the project u
 
 ![________.gif](https://blueprint.hackclub.com/user-attachments/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDg5LCJwdXIiOiJibG9iX2lkIn19--d28d5501b2f21503da48002187fe91ca57f84727/________.gif)
 
+  
+
+## 10/5/2025 10 PM - Budgetification  
+
+## Overview
+They say money is the root of all evil, and those with a lot of money are going to be evil.
+
+By that logic, I'm a saint. 
+
+Using the grant money I would get from a project of this scale (400USD), I'm in a bit of a weird spot, where I have just a little too much money to justify making a cheap crappy mill, but also don't have *anywhere* near enough money to make a high end mill. 
+
+So, we're going to be cutting a lot of corners and using a few cheaty shortcuts to make more out of less on this. 
+
+## The big picture
+Just like the 7 deadly sins, a CNC router has 7 main parts that differentiate it between a working machine and a pile of junk and disappointment. These are:
+
++ The Motion system - the Rails and screws that drive the mill
++ Motors and Drivers - the actual movement of the device
++ Controller Board - Interfaces between the Pi and the Motors, controlling them
++ Spindle - The actual cutting tool
++ Frame - The actual structure of the device, made from aluminum and broken dreams
++ Fasteners - Mounts to keep everything in place
++ Misc supplies - Wires, lubricant, all that stuff.
+
+If you don't have just one of these, you can kiss that 400$ goodbye. 
+
+So we'll go through these one by one, and hopefully not hang ourselves in the process.
+
+#### Part 1: Motion, and my ever-dwindling faith in salvation for whoever created solidworks.
+
+First off, Fuck solidworks, it's a terrible program made by evil frenchmen (and women) to keep all engineers in a perpetual state of misery. When I started this I was thinking that I would be cool, making awesome cad mockups of different components and all that crap. Instead solidworks spends an hour crashing and I can't tell you why. This entire segment is being written on my laptop while I reinstall solidworks, fuck solidworks.
+
+In other news, making things move is hard, especially when the things you want to move are particularly fucking annoying. In this case we want to move the spindle and all the hardware I meticulously listed in the last part across the work envelope (basically the area that this machine can work effectively).
+
+Now, there are two parts to this design that we're using:
+
++ Linear rails - Steel Rails that keep the mill from becoming a OSHA inspectors nightmare.
++ Lead Screws - Threaded rods that turn the rotational motion of the stepper motors to linear motion.
+
+We'll be using 6 MGN12H Rails for this design, 2 for each axis, and 3 Lead screws, specifically T8 ones with a 2mm pitch, which has a good balance between speed and precision.
+
+This is a list of everything I'll need:
+
+**Linear Rails & Carriages:**
+
+4x MGN12H linear rails, 400mm length
+8x MGN12H carriages (2 per rail, usually included)
+32x M3 screws for mounting rails to frame (8 per rail)
+
+**Lead Screws & Nuts:**
+
+3x T8 lead screw, 8mm diameter, 400mm length
+3x T8 anti-backlash nuts (spring-loaded type)
+6x bearing blocks (2 per lead screw - one fixed end, one floating end)
+
+**Couplers:**
+
+3x flexible shaft couplers, 5mm to 8mm (connects NEMA 23 motor shaft to lead screw)
+
+**Mounting Hardware:**
+
+12x M5 bolts, 20-25mm length (for bearing block mounting)
+12x M5 T-nuts (for attaching to aluminum extrusion)
+Thread locker (blue Loctite 242)
+
+**Alignment & Assembly:**
+
+Machinist square or measuring tools (for squaring rails)
+Lithium grease or PTFE lubricant (for rails and lead screws)
+Shims if needed (aluminum foil works in a pinch for minor adjustments)
+
+Total estimated cost: $100
+
+#### Part 2: Motors, and the growing desire to throw myself off a bridge
+
+Now, I consider myself a bit of a wizard, who wouldn't, with a wizard profile picture and a desire to play with lightning and electricity. But there is one thing that scares the absolute shit out of me, and that's motors. No real reason, I just tend to blow them up pretty often.
+
+Thus, we're gonna go ahead and use stepper motors for this, we'll need 3 of them for each axis, and since they're cheap, and have a super high torque, be using NEMA 23 steppers for controlled rotational force.
+
+We also need drivers for this, and I'll be using TB6600 drivers as they're only a few dollars each on Aliexpress, and are overkill for what we need.
+
+Finally, we'll need a power supply, but these are relatively easy to come by so I'll just purchase a generic one off of aliexpress for 10$.
+
+Finally Finally, I'll also need a ton of wire, specifically 18AWG and 22AWG for power and signal respectively, I'll just buy this from my local hardware store. 
+
+I made a general list of parts I'll need below:
+
+*Stepper Motors:*
+
+3x NEMA 23 stepper motors, 175+ oz-in holding torque
+3x motor mounting brackets (will 3D print these)
+12x M5 bolts for motor mounting
+
+*Stepper Drivers:*
+
+3x TB6600 stepper motor drivers (4A, 42VDC rated)
+3x heatsinks (usually included with drivers)
+Driver mounting board or DIN rail (optional, for organization)
+
+*Power Supply:*
+
+1x 24V 15A (360W) switching power supply
+1x power cord (appropriate for your region)
+1x power switch (optional but recommended)
+Ferrite cores for EMI suppression (optional, reduces electrical noise)
+
+*Wiring & Connections:*
+
+18AWG stranded wire, ~10 meters (for motor connections)
+22AWG wire, ~5 meters (for signal wires)
+Terminal blocks or wire ferrules
+Wire labels or heat shrink with labels
+Cable ties and cable chain/conduit
+
+*Safety & Control:*
+
+6x limit switches (2 per axis - home and end)
+1x emergency stop button (NC - normally closed type)
+Relay or contactor for E-stop (optional, for spindle cutoff)
+
+*Connectors:*
+
+3x 4-pin connectors for motors (optional, makes maintenance easier)
+Spade terminals or screw terminals for power connections
+Heat shrink tubing, various sizes
+
+*Tools & Supplies:*
+
+Crimping tool (so I can keep things neat and modular)
+
+Estimated cost: about 90$
+
+Oh crap, I found an aliexpress listing with the motors, drivers, and power supply for like 65$, I'm pasting the link here so I don't forget: https://www.alibaba.com/product-detail/Hanpose-Stepper-Motor-57-23HS7628-TB6600_1600619252628.html?mark=google_shopping&src=sem_ggl&field=UG&from=sem_ggl&cmpgn=22601186621&adgrp=183115180274&fditm=&tgt=pla-293946777986&locintrst=&locphyscl=9028718&mtchtyp=&ntwrk=g&device=c&dvcmdl=&creative=754577009438&plcmnt=&plcmntcat=&aceid=&position=&gad_source=1&gad_campaignid=22601186621&gclid=Cj0KCQjwrojHBhDdARIsAJdEJ_cbvPD0hWPBHZGi9ex1MgGYLaZ91SMrtJB-7Pp0noXhartcWErmVXAaAu41EALw_wcB
+
+#### Part 3, the controller board
+
+Now, the Raspberry pi is lame, and doesn't have the processing power to do real time control so I'm instead going to go for the MKS DLC32 MAX, as it's more than powerful enough to control it, has a cool touchscreen, and has support for wifi sending, which is just kind of a neat feature. Here's the list:
+
+*Main Controller:*
+
+1x MKS DLC32 MAX board
+
+*Wiring to Stepper Drivers:*
+Dupont jumper wires or ribbon cable (~20 wires needed)
+
+3x step signal wires (one per driver)
+3x direction signal wires
+3x enable signal wires
+Common ground wires
+
+
+Wire management: heat shrink or cable sleeve
+
+*Limit Switches Connection:*
+
+6x 2-pin cables for limit switches (~1 meter each)
+Pull-up resistors if not included on board (usually built-in)
+
+*Spindle Control:*
+
+2-wire cable for PWM signal to spindle controller
+Optocoupler module (optional, for electrical isolation)
+
+*Power Connection:*
+
+2x power wires (12-24V input from power supply)
+XT60 or screw terminal connector
+
+*Mounting:*
+
+Standoffs or mounting bracket (can 3D print)
+4x M3 screws for board mounting
+Enclosure (optional but recommended for protection)
+
+*Emergency Stop Integration:*
+
+E-stop wiring to board's reset or enable pins
+Relay module if using E-stop to cut all power
+
+#### Part 4, The spindle, how many of these do I have to do??
+
+Finally, an easy one, the Spindle is going to be the last part of my design, and I'll only build it when everything else is designed and constructed, to make sure I spend only what I have to, the mount bracket will be milled at my school, and I will use a cheap spindle speed controller and wires I bought fore the other stuff. 
+
+#### Part 5, the frame
+
+This is easy, I'm going to be using 2020 aluminum extrusion I can pick up for cheap lengths, and cut with a hacksaw I stole from my school. I can probably make the entire thing in about 5 meters of aluminium, or about 50$ worth of material on, say it with me, Aliexpress. I'll also just 3d print brackets for it, which should work well if I reinforce and design them properly.
+
+The other two parts are easy enough I can just figure them out once I get to construction.
+
+Now, I'm sleepy, and have AP bio homework to cry over, so I'll leave it here, I spent about 3 hours researching different options and writing this damn paper.
+
+![Computer-Suicide-meme-4.jpg](https://blueprint.hackclub.com/user-attachments/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjUyLCJwdXIiOiJibG9iX2lkIn19--8691b27f8061306aac55a88149f769cf9d9d0570/Computer-Suicide-meme-4.jpg)
   
 
